@@ -1,19 +1,269 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parfüm-Labor Quiz</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; background: #fdfbf7; color: #333; padding: 50px; }
-        h1 { color: #8c6d46; }
-        .box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: inline-block; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parfüm-Labor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--ink:#f4ead8;--mute:#bfae98;--gold:#e9c46a;--gold2:#f6dc94;--line:#6a4a38;--panel:#2a1c15cc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#120d0a}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--ink);font:400 16px/1.55 Inter,system-ui,sans-serif;background:radial-gradient(1100px 700px at 15% 0,#6b4330 0,#2a1c15 48%,#120d0a 100%) fixed}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 18px 56px}
+.bar{display:flex;align-items:center;gap:12px;margin:0 0 28px}
+.logo{font:600 24px "Playfair Display",Georgia,serif;margin-right:auto;cursor:pointer;background:none;border:0;color:var(--ink)}
+.logo small{font:500 10px Inter,sans-serif;letter-spacing:.14em;color:var(--gold);margin-left:4px}
+.pill,.btn{border-radius:999px;border:1px solid var(--gold);font:500 15px Inter,sans-serif;padding:11px 20px;cursor:pointer;text-decoration:none;display:inline-block}
+.pill,.btn.gold{background:linear-gradient(#f4d985,#e0b94f);color:#2a1c0c;box-shadow:0 6px 24px #e9c46a44}
+.btn.ghost{background:transparent;color:var(--gold2)}
+.btn.white{background:#f6efe2;color:#2a1c0c;border-color:#f6efe2}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:500;margin:0}
+h1{font-size:clamp(38px,7vw,64px);line-height:1.05}
+h1 em,h2 em{color:var(--gold);font-style:italic}
+.sub{color:var(--mute);max-width:46ch}
+.hero{display:grid;gap:28px}
+@media(min-width:860px){.hero{grid-template-columns:1.1fr .9fr;align-items:center}}
+.qcard{background:#17110d;border:1px solid var(--gold);border-radius:24px;padding:20px;margin-top:22px;box-shadow:0 0 40px #e9c46a22}
+.qcard h3{font-size:24px;margin:2px 0 12px}
+.seas{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.seas span{border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px}
+.btn.big{width:100%;padding:16px;font-size:17px}
+.note{font-size:12.5px;color:var(--mute);text-align:center;margin:10px 0 0}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{border-radius:16px;padding:10px 4px;display:flex;justify-content:center;box-shadow:0 8px 24px #0006}
+.tile svg{width:100%;height:auto;max-height:150px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:22px;backdrop-filter:blur(6px)}
+.kick{font:500 11px Inter,sans-serif;letter-spacing:.16em;color:var(--gold)}
+.top{display:flex;justify-content:space-between}
+.prog{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0 24px}
+.prog i{height:3px;border-radius:2px;background:#ffffff33}.prog i.on{background:var(--gold2)}
+.panel h2{font-size:clamp(26px,5vw,38px);line-height:1.15}
+.hint{color:var(--mute);font-size:14px;margin:6px 0 18px}
+.opts{display:grid;gap:10px}.g2{grid-template-columns:1fr 1fr}.gt{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid var(--line);background:#ffffff0d;color:var(--ink);border-radius:16px;padding:14px 16px;font:inherit;cursor:pointer;transition:.15s}
+.opt b{display:block;font-weight:500}.opt small{display:block;color:var(--mute);font-size:13px;line-height:1.3}
+.opt .em{font-size:24px}.opt>span:nth-child(2){flex:1}
+.ck{width:22px;height:22px;border-radius:7px;border:1.5px solid #ffffff66;flex:none}
+.opt[aria-pressed="true"]{border-color:var(--gold2);background:#e9c46a22;box-shadow:0 0 0 1px var(--gold2),0 0 24px #e9c46a33}
+.opt[aria-pressed="true"] .ck{background:var(--gold);border-color:var(--gold)}
+.opt[aria-pressed="true"] .ck::after{content:"✓";display:block;color:#2a1c0c;text-align:center;font-size:14px;line-height:19px}
+.gt .opt{flex-direction:column;text-align:center;padding:16px 8px}.gt .ck{display:none}.gt .em{font-size:30px}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid #ffffff22}
+.nav .btn{padding:11px 22px}
+.load{text-align:center;padding:90px 0 60px;cursor:pointer}
+.load h2{font-style:italic;margin-bottom:24px}
+.strip{overflow:hidden;margin:0 -18px}
+.strip div{display:flex;gap:14px;width:max-content;animation:slide 9s linear infinite}
+.strip .tile{width:120px;flex:none}
+.mark{color:var(--gold);font-size:22px;margin:0 0 8px}
+@keyframes slide{to{transform:translateX(-50%)}}
+.best{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:760px){.best{grid-template-columns:.9fr 1.1fr;align-items:center}}
+.pic{background:#f1e9d8;border:6px solid #a8744f;border-radius:18px;display:flex;justify-content:center;padding:14px}
+.pic svg{width:min(240px,70%);height:auto}.pic img,.tile img{width:100%;max-height:150px;object-fit:contain}.pic img{max-height:260px}
+.mrow{display:flex;align-items:center;gap:14px;margin:0 0 12px}
+.badge{background:var(--gold);color:#2a1c0c;border-radius:999px;font-size:13px;font-weight:500;padding:5px 12px}
+.brand{font:500 12px Inter,sans-serif;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.best h3{font-size:clamp(34px,6vw,50px);line-height:1.05;margin:2px 0 8px}
+.why{list-style:none;padding:0;margin:12px 0 16px;display:grid;gap:6px;font-size:15px}
+.why li::before{content:"✓";display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--gold);color:#2a1c0c;text-align:center;font-size:12px;line-height:20px;margin-right:10px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.acts .btn{padding:10px 18px;font-size:14.5px}
+.more{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
+.mc{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:12px;text-align:center}
+.mc .tile{box-shadow:none;margin-bottom:8px}.mc h4{font:500 19px "Playfair Display",Georgia,serif;margin:0}.mc p{margin:2px 0 8px;color:var(--mute);font-size:13.5px}
+.mc a{color:var(--gold2);font-size:14px}
+.fine{font-size:12.5px;color:var(--mute);margin:22px 0 0}
+.res-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:30s!important}}
+</style>
 </head>
 <body>
-    <div class="box">
-        <h1>Willkommen im Parfüm-Labor! 🌸</h1>
-        <p>Dein interaktives Parfüm-Quiz entsteht hier gerade.</p>
-    </div>
+<div class="wrap">
+<div class="bar"><button class="logo" data-go="home">Parfüm-Labor<small>LAB</small></button><button class="pill" data-go="quiz">Parfüm finden</button></div>
+
+<section id="home" class="hero">
+<div>
+<p class="kick">DEIN DUFT-QUIZ</p>
+<h1>Find your <em>signature scent</em></h1>
+<p class="sub">Beantworte 7 kurze Fragen und erhalte Parfüms, die zu deinem Geschmack passen, jedes mit Match-Wert.</p>
+<div class="qcard"><p class="kick">QUIZ STARTEN</p><h3>Welche Jahreszeit trägst du am meisten?</h3>
+<div class="seas"><span>🌷 Frühling</span><span>☀️ Sommer</span><span>🍂 Herbst</span><span>❄️ Winter</span></div>
+<button class="btn gold big" data-go="quiz">Zum Quiz →</button>
+<p class="note">7 Fragen · 1 Minute · keine Anmeldung</p></div>
+</div>
+<div class="tiles" id="htiles"></div>
+</section>
+
+<section id="quiz" class="panel" hidden>
+<div class="top"><span class="kick">PARFÜM FINDEN</span><span class="kick" id="cnt"></span></div>
+<div class="prog" id="prog"></div>
+<h2 id="qt"></h2><p class="hint" id="qh"></p>
+<div class="opts" id="qo"></div>
+<div class="nav"><button class="btn ghost" id="back">← Zurück</button><button class="btn gold" id="next">Weiter →</button></div>
+</section>
+
+<section id="laden" class="load" hidden>
+<h2 id="lmsg">Deine Antworten werden gelesen…</h2>
+<div class="mark">▼</div>
+<div class="strip"><div id="lstrip"></div></div>
+<p class="note" style="margin-top:30px">Zum Überspringen tippen</p>
+</section>
+
+<section id="ergebnis" hidden>
+<div class="res-top"><div><p class="kick">DEINE ERGEBNISSE</p><h2 style="font-size:clamp(30px,6vw,46px)">Diese Parfüms sind <em>für dich</em></h2></div>
+<div class="acts"><button class="btn ghost" id="chg">← Antworten ändern</button><button class="btn ghost" id="rt">↻ Quiz neu starten</button></div></div>
+<div id="res"></div>
+<p class="fine">Die Flakons sind Illustrationen, keine Produktfotos. Echte Fotos darf diese Seite nicht laden, deshalb führt „Echte Fotos ansehen“ zur Bildersuche. Noten und Preisklassen sind grobe Richtwerte, die Preise schwanken je nach Shop und Größe.</p>
+</section>
+</div>
+<script>
+const FC=["#5fb89a","#d9577a","#e8c98a","#9c6b4a","#b5632f"],FAM=["frisch","blumig","süß","holzig","würzig"];
+const NV={"Bergamotte":[3,0,0,0,1],"Zitrone":[3,0,0,0,0],"Grapefruit":[3,0,1,0,0],"Mandarine":[3,0,1,0,0],"Orange":[3,0,1,0,0],"Minze":[3,0,0,1,0],"Rosa Pfeffer":[1,0,0,0,3],"Birne":[2,1,1,0,0],"Schwarze Johannisbeere":[1,0,2,0,0],"Kardamom":[1,0,0,0,3],"Ingwer":[2,0,0,0,3],"Zimt":[0,0,1,0,3],"Rose":[0,3,1,0,0],"Jasmin":[0,3,1,0,0],"Lavendel":[1,2,0,1,0],"Iris":[0,2,0,2,0],"Orangenblüte":[0,3,1,0,0],"Veilchen":[0,3,1,0,0],"Maiglöckchen":[1,3,0,0,0],"Pfingstrose":[0,3,1,0,0],"Kokos":[0,0,3,0,0],"Vanille":[0,0,3,0,1],"Sandelholz":[0,0,1,3,0],"Zeder":[0,0,0,3,1],"Moschus":[0,1,2,1,0],"Amber":[0,0,2,1,2],"Patchouli":[0,0,0,3,1],"Tonkabohne":[0,0,3,1,1],"Vetiver":[1,0,0,3,0],"Weihrauch":[0,0,0,2,3],"Praline":[0,0,3,0,0],"Honig":[0,1,3,0,0],"Leder":[0,0,0,3,1]};
+const Q=[
+{k:"who",t:"Für wen ist der Duft?",h:"Wähle eine Option.",m:0,req:1,l:"",o:[["f","Damen","Damen- und Unisexdüfte"],["m","Herren","Herren- und Unisexdüfte"],["a","Egal","Zeig mir alles"]]},
+{k:"seasons",t:"In welchen Jahreszeiten trägst du ihn?",h:"Wähle eine oder mehrere.",m:1,req:1,l:"g2",o:[["fr","Frühling","Grüne Blüten und frische Zitrusnoten","🌷",[2,3,0,0,0]],["so","Sommer","Frisch und leicht","☀️",[3,0,1,0,0],["Sommer"]],["he","Herbst","Gewürze, Hölzer und Leder","🍂",[0,0,1,2,3]],["wi","Winter","Amber, Vanille und warme Harze","❄️",[0,0,3,1,2],["Winter"]],["ga","Ganzjährig","Ein Duft für jede Jahreszeit","🌍"]]},
+{k:"occ",t:"Für welchen Anlass ist er?",h:"Wähle einen oder mehrere.",m:1,req:1,l:"g2",o:[["al","Alltag","Für jeden Tag","🏠",[1,1,1,1,0],["Alltag"]],["bu","Büro","Professionell und dezent","💼",[2,1,0,1,0],["Büro"]],["da","Date","Zum Verführen","💘",[0,1,2,0,2],["Date"]],["fe","Festlich","Hochzeit, Dinner, Gala","🥂",[1,1,2,0,1],["Party"]],["sp","Sport","Frisch und leicht","🏃",[3,0,0,1,0]]]},
+{k:"style",t:"Welchen Stil willst du ausstrahlen?",h:"Wähle bis zu 3.",m:1,max:3,req:1,l:"gt",o:[["fr","Frisch","","💨",[3,0,0,0,0]],["el","Elegant","","💎",[0,2,0,2,0]],["ve","Verführerisch","","🔥",[0,0,2,1,2]],["ur","Urban","","🏙️",[1,0,0,2,1]],["na","Natürlich","","🌿",[1,2,0,1,0]],["sp","Sportlich","","👟",[3,0,0,1,0]],["ro","Romantisch","","💗",[0,3,1,0,0]],["ge","Geheimnisvoll","","🌙",[0,0,1,2,2]],["go","Gemütlich","","🛋️",[0,0,3,1,1]],["kl","Klassisch","","👑",[0,2,0,1,1]]]},
+{k:"notes",t:"Welche Düfte sprechen dich an?",h:"Wähle so viele, wie du magst.",m:1,req:1,l:"gt",o:[["zi","Zitrus","","🍋",[3,0,0,0,0]],["bl","Blumig","","🌸",[0,3,0,0,0]],["ho","Holzig","","🌲",[0,0,0,3,0]],["wu","Würzig","","🌶️",[0,0,0,0,3]],["su","Süß","","🍬",[0,0,3,0,0]],["ma","Maritim","","🌊",[3,0,0,1,0]],["ar","Aromatisch","","🌿",[2,1,0,1,1]],["le","Leder / Rauch","","🧥",[0,0,0,2,2]]]},
+{k:"budget",t:"Wie hoch ist dein Budget?",h:"Wähle mehrere oder keins, wenn es egal ist.",m:1,req:0,l:"g2",o:[["g","Günstig","bis ca. 40 €"],["m","Mittel","ca. 40 bis 90 €"],["l","Premium","ab ca. 90 €"]]},
+{k:"intens",t:"Wie intensiv magst du es?",h:"Wähle eine Option.",m:0,req:1,l:"",o:[["so","Dezent","Hautnah und diskret",0,0,["Büro","Alltag","Sommer"]],["ba","Ausgewogen","Spürbar, ohne zu erschlagen"],["in","Intensiv","Hält den ganzen Tag und hinterlässt eine Duftspur",0,0,["Party","Winter","Date"]]]}];
+const CL={g:["Günstig","bis ca. 40 €"],m:["Mittel","ca. 40 bis 90 €"],l:["Premium","ab ca. 90 €"]};
+const W=[
+["Ariana Grande","Cloud","g","Wolkig-süß, wie ein Kuschelpulli zum Aufsprühen.",["Lavendel","Birne","Bergamotte","Kokos","Praline","Vanille","Moschus","Sandelholz"]],
+["4711","Echt Kölnisch Wasser","g","Zitrisch und frisch, der Klassiker aus Omas Badezimmer (zu Recht).",["Zitrone","Orange","Bergamotte","Lavendel","Orangenblüte"]],
+["Elizabeth Arden","Green Tea","g","Spa-Tag im Flakon, frisch und unaufgeregt.",["Zitrone","Bergamotte","Minze","Jasmin","Moschus"]],
+["Narciso Rodriguez","For Her","m","Warm, weich und ein bisschen geheimnisvoll.",["Orangenblüte","Rose","Moschus","Amber","Patchouli","Vanille"]],
+["Chloé","Eau de Parfum","m","Zarter Rosengarten mit Seidenkleid-Gefühl.",["Pfingstrose","Rose","Maiglöckchen","Zeder","Amber"]],
+["Marc Jacobs","Daisy","m","Fröhlich-blumig, riecht nach Gänseblümchenwiese mit Sonnenbrille.",["Grapefruit","Veilchen","Jasmin","Moschus","Vanille"]],
+["Lancôme","La Vie est Belle","m","Süß und gourmandig, der Nachtisch unter den Düften.",["Schwarze Johannisbeere","Birne","Iris","Jasmin","Orangenblüte","Praline","Vanille","Patchouli","Tonkabohne"]],
+["Calvin Klein","Eternity","m","Sauberer, zarter Blütenduft ohne Drama.",["Mandarine","Maiglöckchen","Rose","Jasmin","Sandelholz","Amber","Patchouli","Moschus"]],
+["Dolce & Gabbana","Light Blue","m","Sizilianischer Sommer, Zitrone inklusive.",["Zitrone","Jasmin","Rose","Zeder","Moschus","Amber"]],
+["Paco Rabanne","Lady Million","m","Glitzernd-süß, der Duft für den großen Auftritt.",["Honig","Jasmin","Orangenblüte","Patchouli","Amber"]],
+["Lancôme","Idôle","m","Modern und klar, Rose trifft weißen Moschus.",["Birne","Bergamotte","Rosa Pfeffer","Jasmin","Rose","Moschus","Vanille"]],
+["Chanel","N°5","l","Der Klassiker, der seit über 100 Jahren Eindruck schindet.",["Zitrone","Bergamotte","Orangenblüte","Rose","Jasmin","Maiglöckchen","Iris","Sandelholz","Vanille","Vetiver","Amber"]],
+["Chanel","Coco Mademoiselle","l","Frisch-orientalisch, selbstbewusst und angenehm frech.",["Orange","Bergamotte","Grapefruit","Rose","Jasmin","Patchouli","Vanille","Vetiver","Moschus","Tonkabohne"]],
+["Dior","J’adore","l","Üppiger Blütenstrauß mit Abendkleid.",["Birne","Bergamotte","Mandarine","Jasmin","Rose","Maiglöckchen","Veilchen","Moschus","Vanille","Zeder"]],
+["Yves Saint Laurent","Libre","l","Lavendel trifft Orangenblüte, mutig und modern.",["Lavendel","Mandarine","Schwarze Johannisbeere","Orangenblüte","Jasmin","Vanille","Moschus","Zeder","Amber"]],
+["Mugler","Angel","l","Karamell-Patchouli-Wolke, die man entweder liebt oder nicht überlebt.",["Bergamotte","Mandarine","Honig","Jasmin","Patchouli","Vanille","Tonkabohne","Amber"]],
+["Guerlain","Shalimar","l","Rauchig-süß mit Vanille, ein Klassiker mit Haltung.",["Zitrone","Bergamotte","Mandarine","Jasmin","Rose","Iris","Vanille","Tonkabohne","Weihrauch","Sandelholz"]],
+["Giorgio Armani","Sì","l","Elegant-süß mit dunklem Fruchtakzent.",["Schwarze Johannisbeere","Mandarine","Rose","Vanille","Patchouli","Amber","Moschus"]],
+["Yves Saint Laurent","Black Opium","l","Dunkel, süß und nachtaktiv.",["Rosa Pfeffer","Orangenblüte","Jasmin","Vanille","Patchouli","Zeder"]],
+["Viktor & Rolf","Flowerbomb","l","Blütenexplosion, nichts für Zurückhaltende.",["Bergamotte","Jasmin","Rose","Patchouli"]],
+["Chanel","Chance Eau Tendre","l","Zarte Grapefruit-Wolke, die wie frisch gewaschene Seide riecht.",["Grapefruit","Jasmin","Iris","Moschus","Zeder","Amber"]],
+["Dior","Miss Dior","m","Frischer Rosenstrauß mit Schleife, romantisch und leicht.",["Mandarine","Pfingstrose","Rose","Moschus"]],
+["Burberry","Her","m","Beerig-blumig und kuschelig, ein Duft für Londoner Regentage.",["Jasmin","Veilchen","Moschus","Vanille"]],
+["Mugler","Alien","l","Mystisch-blumig mit warmem Holz, wie von einem anderen Stern.",["Jasmin","Amber","Sandelholz","Zeder"]],
+["Dolce & Gabbana","The One","m","Warm-blumig und elegant, der Klassiker für den Abend.",["Bergamotte","Orangenblüte","Jasmin","Vanille","Amber","Moschus"]],
+["Carolina Herrera","Good Girl","l","Süß-blumig mit Tonka und Kakao, brav ist hier nur der Name.",["Bergamotte","Zitrone","Jasmin","Orangenblüte","Iris","Tonkabohne","Vanille","Praline","Sandelholz","Moschus","Amber","Patchouli","Zeder"]],
+["Versace","Bright Crystal","m","Glitzernd-frisch mit Pfingstrose, leicht und sommerlich.",["Pfingstrose","Moschus","Amber"]]];
+const M=[
+["Jean Paul Gaultier","Le Male","m","Barbershop-Lavendel und cremige Vanille: warm, sinnlich und herrlich neunzigerig.",["Minze","Lavendel","Bergamotte","Kardamom","Orangenblüte","Zimt","Vanille","Tonkabohne","Sandelholz","Amber"],"m"],
+["Dior","Sauvage","l","Frisch-würzig, kraftvoll und extrem beliebt.",["Bergamotte","Rosa Pfeffer","Lavendel","Vetiver","Zeder","Amber"],"m"],
+["Chanel","Bleu de Chanel","l","Frisches Holz mit Zitrus, elegant und vielseitig.",["Grapefruit","Zitrone","Minze","Rosa Pfeffer","Ingwer","Jasmin","Weihrauch","Zeder","Sandelholz","Patchouli","Vetiver"],"m"],
+["Giorgio Armani","Acqua di Giò","m","Meeresbrise im Flakon, leicht und sauber.",["Bergamotte","Mandarine","Jasmin","Patchouli","Zeder","Moschus"],"m"],
+["Dior","Fahrenheit","m","Lavendel trifft Leder, ein eigenwilliger Klassiker.",["Lavendel","Mandarine","Bergamotte","Veilchen","Jasmin","Leder","Vetiver","Patchouli"],"m"],
+["Paco Rabanne","1 Million","m","Süß-würzig und glänzend, für den großen Auftritt.",["Grapefruit","Mandarine","Minze","Zimt","Rose","Leder","Amber","Patchouli"],"m"],
+["Davidoff","Cool Water","g","Frisch wie ein Sprung ins Meer, preiswert und beliebt.",["Minze","Lavendel","Jasmin","Sandelholz","Zeder","Moschus","Amber"],"m"],
+["Tom Ford","Ombré Leather","l","Weiches Leder mit Kardamom, dunkel und edel.",["Kardamom","Jasmin","Leder","Patchouli","Amber"],"u"],
+["Hugo Boss","Bottled","m","Apfel, Zimt und Holz: der Klassiker fürs erste Date.",["Bergamotte","Zitrone","Zimt","Sandelholz","Vetiver","Zeder","Vanille"],"m"],
+["Joop!","Homme","g","Süß-würzig und charakterstark, ein Retro-Held mit Vanille.",["Bergamotte","Orange","Zimt","Jasmin","Vanille","Tonkabohne","Amber","Patchouli"],"m"],
+["Azzaro","Chrome","g","Frisch und sauber, riecht nach Sommer und Meerwasser.",["Zitrone","Bergamotte","Mandarine","Rosa Pfeffer","Zeder","Moschus"],"m"],
+["Calvin Klein","CK One","g","Der Unisex-Klassiker, frisch und unkompliziert.",["Bergamotte","Zitrone","Jasmin","Rose","Veilchen","Moschus","Amber","Sandelholz"],"u"],
+["Hugo Boss","The Scent","m","Ingwer und Leder, warm und leicht verführerisch.",["Ingwer","Leder"],"m"],
+["Prada","L’Homme","l","Elegant-pudrig mit Iris, ruhig und sehr gepflegt.",["Orangenblüte","Iris","Amber","Patchouli"],"m"],
+["Giorgio Armani","Code","m","Dunkel-elegant mit Tonka, gemacht für den Abend.",["Bergamotte","Zitrone","Orangenblüte","Tonkabohne","Leder"],"m"],
+["Versace","Eros","m","Minze, Vanille und Tonka: laut, süß und selbstbewusst.",["Minze","Zitrone","Tonkabohne","Vanille","Zeder","Vetiver"],"m"],
+["Hermès","Terre d’Hermès","l","Orange trifft Stein und Holz, erdig und edel.",["Orange","Grapefruit","Rosa Pfeffer","Vetiver","Zeder"],"m"]];
+const P=[...W.map(x=>[...x,x[1]==="Echt Kölnisch Wasser"?"u":"f"]),...M];
+const TG={"Chance Eau Tendre":["Alltag","Büro","Date"],"Miss Dior":["Alltag","Date","Sommer"],"Her":["Alltag","Date","Winter"],"Alien":["Party","Date","Winter"],"The One":["Date","Party","Winter"],"Good Girl":["Party","Date","Winter"],"Bright Crystal":["Sommer","Alltag"],"Bottled":["Alltag","Büro","Date"],"Homme":["Alltag","Date","Winter"],"Chrome":["Sommer","Alltag","Büro"],"CK One":["Sommer","Alltag"],"The Scent":["Date","Winter","Party"],"L’Homme":["Büro","Alltag","Date"],"Code":["Date","Party","Winter"],"Eros":["Party","Sommer","Date"],"Terre d’Hermès":["Alltag","Büro"],"Cloud":["Alltag","Date","Winter"],"Echt Kölnisch Wasser":["Sommer","Alltag","Büro"],"For Her":["Date","Büro","Party"],"Eau de Parfum":["Büro","Alltag","Sommer"],"Daisy":["Sommer","Alltag"],"La Vie est Belle":["Date","Winter","Party"],"N°5":["Büro","Date"],"Coco Mademoiselle":["Party","Date","Büro"],"J’adore":["Date","Party"],"Libre":["Party","Date","Alltag"],"Angel":["Winter","Party","Date"],"Shalimar":["Winter","Date"],"Green Tea":["Sommer","Büro","Alltag"],"Eternity":["Büro","Alltag"],"Light Blue":["Sommer","Alltag"],"Lady Million":["Party","Date"],"Idôle":["Büro","Alltag","Date"],"Sì":["Winter","Date","Büro"],"Black Opium":["Party","Winter","Date"],"Flowerbomb":["Date","Party","Winter"],"Le Male":["Date","Party","Winter"],"Sauvage":["Alltag","Date","Party"],"Bleu de Chanel":["Büro","Alltag","Date"],"Acqua di Giò":["Sommer","Alltag","Büro"],"Fahrenheit":["Winter","Date","Büro"],"1 Million":["Party","Date"],"Cool Water":["Sommer","Alltag"],"Ombré Leather":["Winter","Date","Party"]};
+const q=t=>encodeURIComponent(t).replace(/%20/g,"+"),SHOP="https://www.idealo.de/preisvergleich/MainSearchProductCategory.html?q=",IMG="https://www.google.com/search?tbm=isch&q=";
+const A={};Q.forEach(q=>A[q.k]=[]);
+let step=0,tm=[],saved=[];
+const $=id=>document.getElementById(id),esc=s=>s.replace(/&/g,"&amp;");
+const cos=(a,b)=>{let d=0,x=0,y=0;for(let k=0;k<5;k++){d+=a[k]*b[k];x+=a[k]*a[k];y+=b[k]*b[k]}return x&&y?d/Math.sqrt(x*y):0};
+const pvec=p=>{const v=[0,0,0,0,0];p[4].forEach(n=>NV[n].forEach((x,k)=>v[k]+=x));return v};
+const dom=v=>v.indexOf(Math.max(...v));
+const PHOTO={};
+const DS={"Chance Eau Tendre":["sq","#f2cfd2","#d9d9d9",0],"Miss Dior":["sq","#f4d8dd","#e8c15a",0],"Her":["sq","#e9c5cf","#b9b9b9",0],"Alien":["sq","#5b3f9a","#c0c0c0",1],"The One":["sq","#e9c69a","#c9a24d",0],"Good Girl":["sq","#1a2a52","#d4a73a",1],"Bright Crystal":["sq","#f2c4cf","#e8c15a",0],"Bottled":["sq","#d9833a","#2a2a2a",0],"Homme":["sq","#8a1f2b","#2a2a2a",1],"Chrome":["sq","#8fb7d6","#c4c7cc",0],"CK One":["sq","#d8e6dc","#6b6b6b",0],"The Scent":["sq","#3a2418","#b9863a",1],"L’Homme":["sq","#e8e2d6","#2a2a2a",0],"Code":["sq","#1a1a1a","#1a1a1a",1],"Eros":["sq","#2fa6d9","#c9a24d",0],"Terre d’Hermès":["sq","#e8833a","#8c8c8c",0],"Cloud":["round","#cfe0f5","#f2d27a",0],"Echt Kölnisch Wasser":["sq","#bfe3df","#d8b24a",0],"Green Tea":["sq","#b5d397","#c9c9c9",0],"For Her":["sq","#e9b9b2","#bdbdbd",0],"Eau de Parfum":["round","#ead2b0","#d9d9d9",0],"Daisy":["round","#f6d3e2","#f08fb4",0],"La Vie est Belle":["sq","#e8cfdc","#e8c15a",0],"Eternity":["sq","#e3ecf1","#c4c7cc",0],"Light Blue":["sq","#86c3ea","#d5d8dc",0],"Lady Million":["diamond","#d9ad3f","#d9ad3f",0],"Idôle":["sq","#f2eee8","#1c1c1c",0],"N°5":["sq","#f3e8cc","#1a1a1a",0],"Coco Mademoiselle":["sq","#e8c48f","#1a1a1a",0],"J’adore":["amph","#e9c76d","#d4a73a",0],"Libre":["sq","#efe2c4","#d4a73a",0],"Angel":["sq","#5da7e6","#c9c9c9",0],"Shalimar":["sq","#2d4287","#d4a73a",1],"Sì":["sq","#dfe5ef","#c4c8cf",0],"Black Opium":["sq","#17141a","#0d0d0d",1],"Flowerbomb":["round","#f2b2c6","#e68aa8",0],"Le Male":["torso","#2f87c7","#bdbdbd",0],"Sauvage":["sq","#1f2a3a","#2a2a2a",1],"Bleu de Chanel":["sq","#1c3a66","#b9bcc2",1],"Acqua di Giò":["sq","#9ccbe8","#c9ccd0",0],"Fahrenheit":["flask","#c0262d","#101010",1],"1 Million":["bar","#d4a73a","#d4a73a",0],"Cool Water":["sq","#4aa4d8","#cfd3d6",0],"Ombré Leather":["sq","#141414","#141414",1]};
+const ST=' stroke="#0004" stroke-width="2"';
+const SH={
+sq:[(b,c)=>'<rect x="52" y="6" width="46" height="40" rx="3" fill="'+c+'"/><rect x="30" y="44" width="90" height="140" rx="10" fill="'+b+'"'+ST+'/>',34,78,82,72,15,12],
+round:[(b,c)=>'<circle cx="75" cy="24" r="17" fill="'+c+'"/><rect x="66" y="38" width="18" height="14" fill="#c9c9c9"/><ellipse cx="75" cy="120" rx="54" ry="66" fill="'+b+'"'+ST+'/>',36,90,78,60,14,11],
+amph:[(b,c)=>'<rect x="62" y="6" width="26" height="26" rx="3" fill="'+c+'"/><path d="M64 30H86V58C116 70 132 96 132 130C132 164 112 184 75 184C38 184 18 164 18 130C18 96 34 70 64 58Z" fill="'+b+'"'+ST+'/>',34,98,82,64,14,11],
+diamond:[(b,c)=>'<rect x="62" y="8" width="26" height="22" fill="'+c+'"/><polygon points="75,30 125,90 108,182 42,182 25,90" fill="'+b+'"'+ST+'/><path d="M25 90H125M75 30L58 90L42 182M75 30L92 90L108 182" stroke="#ffffff66" fill="none"/>',42,102,66,62,12,10],
+torso:[(b,c)=>'<rect x="62" y="6" width="26" height="26" fill="'+c+'"/><path d="M58 32H92V50C96 58 122 62 124 80C124 102 112 112 112 132C112 154 120 164 120 184H30C30 164 38 154 38 132C38 112 26 102 26 80C28 62 54 58 58 50Z" fill="'+b+'"'+ST+'/>',40,100,70,64,11,9],
+flask:[(b,c)=>'<defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15100f"/><stop offset=".55" stop-color="'+b+'"/><stop offset="1" stop-color="#e5532a"/></linearGradient></defs><rect x="54" y="6" width="42" height="40" rx="3" fill="'+c+'"/><path d="M58 44H92L98 68C98 82 116 90 116 124V176C116 182 110 186 104 186H46C40 186 34 182 34 176V124C34 90 52 82 52 68Z" fill="url(#fg)"'+ST+'/>',40,100,70,64,13,11],
+bar:[(b,c)=>'<rect x="62" y="30" width="26" height="22" fill="#b8892a"/><rect x="34" y="50" width="82" height="134" rx="4" fill="'+b+'" stroke="#8a6419" stroke-width="2"/><path d="M34 90H116M34 130H116" stroke="#ffffff55"/>',40,92,70,76,12,10]};
+function flakon(a,b,c){if(PHOTO[b])return '<img src="'+PHOTO[b]+'" alt="'+esc(a)+' '+esc(b)+'">';const d=DS[b]||["sq",c,"#c9a24d",0],S=SH[d[0]],dk=d[3];
+const wr=(s,n)=>{const o=[];let l="";s.split(" ").forEach(w=>{if((l+" "+w).trim().length>n&&l){o.push(l);l=w}else l=(l+" "+w).trim()});if(l)o.push(l);return o};
+const L=[...wr(a,S[5]).map(x=>[x,8.5,dk?"#b9b9b9":"#6b5420"]),...wr(b,S[6]).map(x=>[x,11.5,dk?"#f0f0f0":"#2b2210"])];
+const t=(s,y,z,f)=>'<text x="75" y="'+y+'" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="'+z+'" fill="'+f+'">'+esc(s)+'</text>';
+const cy=S[2]+S[4]/2+4;
+return '<svg viewBox="0 0 150 190" role="img" aria-label="Illustration: '+esc(a)+' '+esc(b)+'">'+S[0](d[1],d[2])+'<rect x="'+S[1]+'" y="'+S[2]+'" width="'+S[3]+'" height="'+S[4]+'" rx="3" fill="'+(dk?"#101010":"#f4ead8")+'"'+(dk?' stroke="#9a9a9a"':'')+'/>'+L.map((l,i)=>t(l[0],cy+(i-(L.length-1)/2)*13,l[1],l[2])).join("")+'</svg>'}
+const BG=["#f1e3c9","#f6d9d9","#dfe6f4","#efe2c8","#f1d6cf","#e0ecdc"];
+const tile=(p,i)=>'<div class="tile" style="background:'+BG[i%6]+'">'+flakon(p[0],p[1],FC[dom(pvec(p))])+'</div>';
+$("htiles").innerHTML=[12,13,18,20,22,6].map((n,i)=>tile(P[n],i)).join("");
+function view(){const h=location.hash.slice(1),v=["quiz","laden","ergebnis"].includes(h)?h:"home";
+if(v==="ergebnis"&&!A.who.length){location.hash="home";return}
+["home","quiz","laden","ergebnis"].forEach(s=>$(s).hidden=s!==v);
+tm.forEach(clearTimeout);tm=[];
+if(v==="quiz")drawQ();if(v==="laden")loading();if(v==="ergebnis")results();window.scrollTo(0,0)}
+function go(v){location.hash=v;view()}
+function drawQ(){const q=Q[step];$("cnt").textContent=(step+1)+"/7";
+$("prog").innerHTML=Q.map((_,i)=>'<i class="'+(i<=step?"on":"")+'"></i>').join("");
+$("qt").textContent=q.t;$("qh").textContent=q.h;
+$("qo").className="opts "+q.l;
+$("qo").innerHTML=q.o.map(o=>'<button type="button" class="opt" data-id="'+o[0]+'" aria-pressed="'+A[q.k].includes(o[0])+'">'+(o[3]?'<span class="em">'+o[3]+'</span>':'')+'<span><b>'+o[1]+'</b><small>'+(o[2]||'')+'</small></span><i class="ck"></i></button>').join("");
+$("next").textContent=step===6?"Ergebnis ansehen →":"Weiter →";$("next").disabled=q.req&&!A[q.k].length}
+$("qo").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;const q=Q[step],a=A[q.k],id=b.dataset.id,i=a.indexOf(id);
+if(!q.m)A[q.k]=[id];else if(i>-1)a.splice(i,1);else{a.push(id);if(q.max&&a.length>q.max)a.shift()}drawQ()};
+$("next").onclick=()=>{if(step<6){step++;drawQ()}else go("laden")};
+$("back").onclick=()=>{if(step>0){step--;drawQ()}else go("home")};
+function loading(){const msg=["Deine Antworten werden gelesen…","Die Noten werden gemischt…","Dein Parfüm wird gesucht…"],r=[...P].sort(()=>Math.random()-.5).slice(0,8);
+$("lstrip").innerHTML=[...r,...r].map((p,i)=>tile(p,i)).join("");$("lmsg").textContent=msg[0];
+tm=[setTimeout(()=>$("lmsg").textContent=msg[1],1600),setTimeout(()=>$("lmsg").textContent=msg[2],3200),setTimeout(()=>go("ergebnis"),4800)]}
+$("laden").onclick=()=>go("ergebnis");
+const ov=(k,id)=>(Q.find(q=>q.k===k).o.find(o=>o[0]===id)||[]);
+function sv(k){const v=[0,0,0,0,0];A[k].forEach(id=>(ov(k,id)[4]||[]).forEach((x,i)=>v[i]+=x));return v}
+function tg(k){return A[k].flatMap(id=>ov(k,id)[5]||[])}
+function calc(){const who=A.who[0]||"a",bd=A.budget,ok=p=>who==="a"||p[5]==="u"||p[5]===who;
+let rows=P.filter(p=>ok(p)&&(!bd.length||bd.includes(p[2])));if(!rows.length)rows=P.filter(ok);
+return rows.map(p=>{const pv=pvec(p),t=TG[p[1]]||[];
+const fo=o=>{if(o[0]==="ga")return .8;const g=o[5]||[];return g.some(x=>t.includes(x))?1:Math.min(.8,o[4]?cos(o[4],pv):.5)};
+const best=k=>Math.max(...A[k].map(id=>fo(ov(k,id))));
+const F={};
+if(A.seasons.length)F.seasons=[.2,best("seasons")];
+if(A.occ.length)F.occ=[.25,best("occ")];
+if(A.style.length)F.style=[.2,cos(sv("style"),pv)];
+if(A.notes.length)F.notes=[.25,cos(sv("notes"),pv)];
+if(A.intens.length){const g=ov("intens",A.intens[0])[5]||[];F.intens=[.1,g.length?(g.some(x=>t.includes(x))?1:.3):.7]}
+let w=0,sum=0;Object.values(F).forEach(([a,v])=>{w+=a;sum+=a*v});
+const why=[],y=(k,l)=>{if(F[k]&&F[k][1]>=.75)why.push(l)};
+y("seasons","Passt zur gewählten Jahreszeit");y("occ","Passt zum Anlass");y("style","Hat den Stil, den du suchst");y("notes","Enthält die Düfte, die du magst");
+if(!bd.length||bd.includes(p[2]))why.push("Im Rahmen deines Budgets");
+return{p,pv,why,s:Math.min(99,Math.round(100*(w?sum/w:0)))}}).sort((a,b)=>b.s-a.s).slice(0,4)}
+function results(){const rows=calc(),b=rows[0],nm=x=>x.p[0]+" "+x.p[1],R=$("res");
+const ring='<svg width="84" height="84" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="#ffffff22" stroke-width="6"/><circle cx="42" cy="42" r="36" fill="none" stroke="#e9c46a" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+(226*b.s/100).toFixed(0)+' 226" transform="rotate(-90 42 42)"/><text x="42" y="46" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="20" fill="#f4ead8">'+b.s+'%</text></svg>';
+R.innerHTML='<div class="panel best"><div class="pic">'+flakon(b.p[0],b.p[1],FC[dom(b.pv)])+'</div><div><div class="mrow">'+ring+'<span class="badge">Dein Favorit</span></div><p class="brand"></p><h3></h3><p class="sub" id="bd"></p><ul class="why"></ul><div class="acts"><a class="btn white" target="_blank" rel="noopener sponsored" id="bb">Wo gibt es das? Preise vergleichen →</a><button class="btn ghost" id="sv"></button><button class="btn ghost" id="sh">Teilen</button></div><p class="note" style="text-align:left"><a id="bi" target="_blank" rel="noopener" style="color:#f6dc94">Echte Fotos ansehen</a> · '+CL[b.p[2]][0]+' ('+CL[b.p[2]][1]+')</p></div></div><h3 style="font-size:28px;margin:30px 0 0">Das könnte dir auch <em>gefallen</em></h3><div class="more" id="mo"></div>';
+R.querySelector(".brand").textContent=b.p[0];R.querySelector("h3").textContent=b.p[1];$("bd").textContent=b.p[3];
+if(b.s<65)R.querySelector(".why").insertAdjacentHTML("beforebegin",'<p class="note" style="text-align:left;color:#f6dc94">Kein perfekter Treffer, aber das Nächstbeste aus unserer Auswahl.</p>');R.querySelector(".why").innerHTML=b.why.map(x=>"<li>"+x+"</li>").join("");
+$("bb").href=SHOP+q(nm(b));$("bi").href=IMG+encodeURIComponent(nm(b)+" Parfum");
+const sb=$("sv"),upd=()=>sb.textContent=saved.includes(nm(b))?"♥ Gemerkt":"♡ Merken";upd();
+sb.onclick=()=>{const i=saved.indexOf(nm(b));if(i>-1)saved.splice(i,1);else saved.push(nm(b));upd()};
+$("sh").onclick=()=>{const t="Mein Parfüm-Match: "+nm(b)+" ("+b.s+" %)";if(navigator.share)navigator.share({title:"Parfüm-Labor",text:t}).catch(()=>{});else{try{navigator.clipboard.writeText(t);$("sh").textContent="Kopiert ✓"}catch(e){$("sh").textContent="Nicht möglich"}}};
+$("mo").innerHTML=rows.slice(1).map((x,i)=>'<div class="mc">'+tile(x.p,i+2)+'<h4></h4><p></p><a target="_blank" rel="noopener sponsored">Preise vergleichen</a></div>').join("");
+[...$("mo").children].forEach((c,i)=>{const x=rows[i+1];c.querySelector("h4").textContent=nm(x);c.querySelector("p").textContent="Match "+x.s+" % · "+CL[x.p[2]][0];c.querySelector("a").href=SHOP+q(nm(x))})}
+$("chg").onclick=()=>{step=0;go("quiz")};
+$("rt").onclick=()=>{Q.forEach(q=>A[q.k]=[]);step=0;go("quiz")};
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(g.dataset.go)});
+addEventListener("hashchange",view);view();
+</script>
 </body>
 </html>
